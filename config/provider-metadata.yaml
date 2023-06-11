@@ -1,9 +1,119 @@
-name: hashicorp/null
+name: aminueza/minio
 resources:
-    null_resource Resource - terraform-provider-null:
+    minio_iam_group Resource - terraform-provider-minio:
         subCategory: ""
-        description: The null_resource resource implements the standard resource lifecycle but takes no further action. The triggers argument allows specifying an arbitrary set of values that, when changed, will cause the resource to be replaced.
-        name: null_resource Resource - terraform-provider-null
-        title: null_resource Resource - terraform-provider-null
+        name: minio_iam_group Resource - terraform-provider-minio
+        title: minio_iam_group Resource - terraform-provider-minio
+        argumentDocs: {}
+        importStatements: []
+    minio_iam_group_membership Resource - terraform-provider-minio:
+        subCategory: ""
+        name: minio_iam_group_membership Resource - terraform-provider-minio
+        title: minio_iam_group_membership Resource - terraform-provider-minio
+        argumentDocs: {}
+        importStatements: []
+    minio_iam_group_policy Resource - terraform-provider-minio:
+        subCategory: ""
+        name: minio_iam_group_policy Resource - terraform-provider-minio
+        title: minio_iam_group_policy Resource - terraform-provider-minio
+        argumentDocs: {}
+        importStatements: []
+    minio_iam_group_policy_attachment Resource - terraform-provider-minio:
+        subCategory: ""
+        name: minio_iam_group_policy_attachment Resource - terraform-provider-minio
+        title: minio_iam_group_policy_attachment Resource - terraform-provider-minio
+        argumentDocs:
+            group_name: (String)
+            id: (String) The ID of this resource.
+            policy_name: (String)
+        importStatements: []
+    minio_iam_group_user_attachment Resource - terraform-provider-minio:
+        subCategory: ""
+        name: minio_iam_group_user_attachment Resource - terraform-provider-minio
+        title: minio_iam_group_user_attachment Resource - terraform-provider-minio
+        argumentDocs: {}
+        importStatements: []
+    minio_iam_policy Resource - terraform-provider-minio:
+        subCategory: ""
+        name: minio_iam_policy Resource - terraform-provider-minio
+        title: minio_iam_policy Resource - terraform-provider-minio
+        argumentDocs: {}
+        importStatements: []
+    minio_iam_service_account Resource - terraform-provider-minio:
+        subCategory: ""
+        name: minio_iam_service_account Resource - terraform-provider-minio
+        title: minio_iam_service_account Resource - terraform-provider-minio
+        argumentDocs:
+            access_key: (String)
+            disable_user: (Boolean) Disable service account
+            id: (String) The ID of this resource.
+            secret_key: (String, Sensitive)
+            status: (String)
+            target_user: (String)
+            update_secret: (Boolean) rotate secret key
+        importStatements: []
+    minio_iam_user Resource - terraform-provider-minio:
+        subCategory: ""
+        name: minio_iam_user Resource - terraform-provider-minio
+        title: minio_iam_user Resource - terraform-provider-minio
+        argumentDocs: {}
+        importStatements: []
+    minio_iam_user_policy_attachment Resource - terraform-provider-minio:
+        subCategory: ""
+        name: minio_iam_user_policy_attachment Resource - terraform-provider-minio
+        title: minio_iam_user_policy_attachment Resource - terraform-provider-minio
+        argumentDocs:
+            id: (String) The ID of this resource.
+            policy_name: (String)
+            user_name: (String)
+        importStatements: []
+    minio_ilm_policy Resource - terraform-provider-minio:
+        subCategory: ""
+        description: minio_ilm_policy handles lifecycle settings for a given minio_s3_bucket.
+        name: minio_ilm_policy Resource - terraform-provider-minio
+        title: minio_ilm_policy Resource - terraform-provider-minio
+        argumentDocs: {}
+        importStatements: []
+    minio_s3_bucket Resource - terraform-provider-minio:
+        subCategory: ""
+        name: minio_s3_bucket Resource - terraform-provider-minio
+        title: minio_s3_bucket Resource - terraform-provider-minio
+        argumentDocs: {}
+        importStatements: []
+    minio_s3_bucket_notification Resource - terraform-provider-minio:
+        subCategory: ""
+        name: minio_s3_bucket_notification Resource - terraform-provider-minio
+        title: minio_s3_bucket_notification Resource - terraform-provider-minio
+        argumentDocs:
+            bucket: (String)
+            events: (Set of String)
+            filter_prefix: (String)
+            filter_suffix: (String)
+            id: (String) The ID of this resource.
+            queue: (Block List) (see below for nested schema)
+            queue_arn: (String)
+        importStatements: []
+    minio_s3_bucket_policy Resource - terraform-provider-minio:
+        subCategory: ""
+        name: minio_s3_bucket_policy Resource - terraform-provider-minio
+        title: minio_s3_bucket_policy Resource - terraform-provider-minio
+        argumentDocs: {}
+        importStatements: []
+    minio_s3_bucket_versioning Resource - terraform-provider-minio:
+        subCategory: ""
+        name: minio_s3_bucket_versioning Resource - terraform-provider-minio
+        title: minio_s3_bucket_versioning Resource - terraform-provider-minio
+        argumentDocs:
+            bucket: (String)
+            exclude_folders: (Boolean)
+            excluded_prefixes: (List of String)
+            id: (String) The ID of this resource.
+            status: (String) Versioning status, one of "Enabled", "Suspended".
+            versioning_configuration: '(Block List, Min: 1, Max: 1) (see below for nested schema)'
+        importStatements: []
+    minio_s3_object Resource - terraform-provider-minio:
+        subCategory: ""
+        name: minio_s3_object Resource - terraform-provider-minio
+        title: minio_s3_object Resource - terraform-provider-minio
         argumentDocs: {}
         importStatements: []
