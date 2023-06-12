@@ -50,13 +50,7 @@ func Configure(p *config.Provider) {
 		}
 	})
 	p.AddResourceConfigurator("minio_s3_object", func(r *config.Resource) {
-		r.ExternalName = config.NameAsIdentifier
+		r.ExternalName = config.IdentifierFromProvider
 		r.ShortGroup = bucket
-		r.ExternalName.SetIdentifierArgumentFn = func(base map[string]any, externalName string) {
-			base["bucket_name"] = externalName
-		}
-		r.ExternalName.OmittedFields = []string{
-			"bucket_name",
-		}
 	})
 }

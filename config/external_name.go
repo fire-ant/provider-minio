@@ -14,7 +14,7 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"minio_s3_bucket_notification":      config.NameAsIdentifier,
 	"minio_s3_bucket_policy":            config.NameAsIdentifier,
 	"minio_s3_bucket_versioning":        config.NameAsIdentifier,
-	"minio_s3_object":                   config.NameAsIdentifier,
+	"minio_s3_object":                   config.IdentifierFromProvider,
 	"minio_ilm_policy":                  config.NameAsIdentifier,
 	"minio_iam_group":                   config.NameAsIdentifier,
 	"minio_iam_group_membership":        config.NameAsIdentifier,
