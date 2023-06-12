@@ -67,6 +67,8 @@ spec:
                 type: string
               forProvider:
                 properties:
+                  bucketName:
+                    type: string
                   content:
                     type: string
                   contentBase64:
@@ -269,6 +271,8 @@ spec:
             - forProvider
             type: object
             x-kubernetes-validations:
+            - message: bucketName is a required parameter
+              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.bucketName)
             - message: objectName is a required parameter
               rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.objectName)
           status:
@@ -276,6 +280,8 @@ spec:
             properties:
               atProvider:
                 properties:
+                  bucketName:
+                    type: string
                   content:
                     type: string
                   contentBase64:
