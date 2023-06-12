@@ -5,7 +5,7 @@ metadata:
   name: basebucket
 spec:
   forProvider:
-    forceDestroy: true
+    forceDestroy: false
     objectLocking: false
     acl: public
 ---
