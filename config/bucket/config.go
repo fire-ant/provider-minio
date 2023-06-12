@@ -20,34 +20,16 @@ func Configure(p *config.Provider) {
 		}
 	})
 	p.AddResourceConfigurator("minio_s3_bucket_notification", func(r *config.Resource) {
-		r.ExternalName = config.NameAsIdentifier
+		r.ExternalName = config.IdentifierFromProvider
 		r.ShortGroup = bucket
-		r.ExternalName.SetIdentifierArgumentFn = func(base map[string]any, externalName string) {
-			base["bucket"] = externalName
-		}
-		r.ExternalName.OmittedFields = []string{
-			"bucket",
-		}
 	})
 	p.AddResourceConfigurator("minio_s3_bucket_policy", func(r *config.Resource) {
-		r.ExternalName = config.NameAsIdentifier
+		r.ExternalName = config.IdentifierFromProvider
 		r.ShortGroup = bucket
-		r.ExternalName.SetIdentifierArgumentFn = func(base map[string]any, externalName string) {
-			base["bucket"] = externalName
-		}
-		r.ExternalName.OmittedFields = []string{
-			"bucket",
-		}
 	})
 	p.AddResourceConfigurator("minio_s3_bucket_versioning", func(r *config.Resource) {
-		r.ExternalName = config.NameAsIdentifier
+		r.ExternalName = config.IdentifierFromProvider
 		r.ShortGroup = bucket
-		r.ExternalName.SetIdentifierArgumentFn = func(base map[string]any, externalName string) {
-			base["bucket"] = externalName
-		}
-		r.ExternalName.OmittedFields = []string{
-			"bucket",
-		}
 	})
 	p.AddResourceConfigurator("minio_s3_object", func(r *config.Resource) {
 		r.ExternalName = config.IdentifierFromProvider
