@@ -14,12 +14,17 @@ import (
 )
 
 type BucketPolicyObservation struct {
+	Bucket *string `json:"bucket,omitempty" tf:"bucket,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	Policy *string `json:"policy,omitempty" tf:"policy,omitempty"`
 }
 
 type BucketPolicyParameters struct {
+
+	// +kubebuilder:validation:Optional
+	Bucket *string `json:"bucket,omitempty" tf:"bucket,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	Policy *string `json:"policy,omitempty" tf:"policy,omitempty"`
@@ -49,6 +54,7 @@ type BucketPolicyStatus struct {
 type BucketPolicy struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.bucket)",message="bucket is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.policy)",message="policy is a required parameter"
 	Spec   BucketPolicySpec   `json:"spec"`
 	Status BucketPolicyStatus `json:"status,omitempty"`

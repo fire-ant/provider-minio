@@ -14,12 +14,17 @@ import (
 )
 
 type BucketNotificationObservation struct {
+	Bucket *string `json:"bucket,omitempty" tf:"bucket,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	Queue []QueueObservation `json:"queue,omitempty" tf:"queue,omitempty"`
 }
 
 type BucketNotificationParameters struct {
+
+	// +kubebuilder:validation:Optional
+	Bucket *string `json:"bucket,omitempty" tf:"bucket,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	Queue []QueueParameters `json:"queue,omitempty" tf:"queue,omitempty"`
@@ -79,8 +84,9 @@ type BucketNotificationStatus struct {
 type BucketNotification struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              BucketNotificationSpec   `json:"spec"`
-	Status            BucketNotificationStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.bucket)",message="bucket is a required parameter"
+	Spec   BucketNotificationSpec   `json:"spec"`
+	Status BucketNotificationStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

@@ -68,6 +68,8 @@ spec:
                 type: string
               forProvider:
                 properties:
+                  bucket:
+                    type: string
                   versioningConfiguration:
                     items:
                       properties:
@@ -271,6 +273,8 @@ spec:
             - forProvider
             type: object
             x-kubernetes-validations:
+            - message: bucket is a required parameter
+              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.bucket)
             - message: versioningConfiguration is a required parameter
               rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.versioningConfiguration)
           status:
@@ -278,6 +282,8 @@ spec:
             properties:
               atProvider:
                 properties:
+                  bucket:
+                    type: string
                   id:
                     type: string
                   versioningConfiguration:

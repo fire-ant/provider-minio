@@ -14,12 +14,17 @@ import (
 )
 
 type BucketVersioningObservation struct {
+	Bucket *string `json:"bucket,omitempty" tf:"bucket,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	VersioningConfiguration []VersioningConfigurationObservation `json:"versioningConfiguration,omitempty" tf:"versioning_configuration,omitempty"`
 }
 
 type BucketVersioningParameters struct {
+
+	// +kubebuilder:validation:Optional
+	Bucket *string `json:"bucket,omitempty" tf:"bucket,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	VersioningConfiguration []VersioningConfigurationParameters `json:"versioningConfiguration,omitempty" tf:"versioning_configuration,omitempty"`
@@ -69,6 +74,7 @@ type BucketVersioningStatus struct {
 type BucketVersioning struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.bucket)",message="bucket is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.versioningConfiguration)",message="versioningConfiguration is a required parameter"
 	Spec   BucketVersioningSpec   `json:"spec"`
 	Status BucketVersioningStatus `json:"status,omitempty"`

@@ -4,6 +4,7 @@ metadata: {}
 spec:
   deletionPolicy: string
   forProvider:
+    bucket: string
     queue:
     - events: ["string"]
       filterPrefix: string
@@ -37,6 +38,7 @@ spec:
     namespace: string
 status:
   atProvider:
+    bucket: string
     id: string
     queue:
     - events: ["string"]

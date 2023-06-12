@@ -4,6 +4,7 @@ metadata: {}
 spec:
   deletionPolicy: string
   forProvider:
+    bucket: string
     versioningConfiguration:
     - excludeFolders: true
       excludedPrefixes: ["string"]
@@ -35,6 +36,7 @@ spec:
     namespace: string
 status:
   atProvider:
+    bucket: string
     id: string
     versioningConfiguration:
     - excludeFolders: true

@@ -68,6 +68,8 @@ spec:
                 type: string
               forProvider:
                 properties:
+                  bucket:
+                    type: string
                   queue:
                     items:
                       properties:
@@ -275,11 +277,16 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: bucket is a required parameter
+              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.bucket)
           status:
             description: BucketNotificationStatus defines the observed state of BucketNotification.
             properties:
               atProvider:
                 properties:
+                  bucket:
+                    type: string
                   id:
                     type: string
                   queue:
