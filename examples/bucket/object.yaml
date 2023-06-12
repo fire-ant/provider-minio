@@ -1,0 +1,37 @@
+---
+apiVersion: bucket.minio.upbound.io/v1alpha1
+kind: Bucket
+metadata:
+  name: basebucket
+spec:
+  forProvider:
+    forceDestroy: true
+    objectLocking: false
+    acl: public
+---
+apiVersion: bucket.minio.upbound.io/v1alpha1
+kind: Object
+metadata:
+  name: basebucket-text
+spec:
+  forProvider:
+    bucketName: basebucket
+    objectName: text.txt
+    contentType: "text/plain"
+    content: "Lorem ipsum dolor sit amet."
+---
+apiVersion: bucket.minio.upbound.io/v1alpha1
+kind: Object
+metadata:
+  name: basebucket-config
+spec:
+  forProvider:
+    bucketName: basebucket
+    objectName: config.json
+    contentType: "application/json"
+    content: |
+      {
+        "key": "value",
+        "key2": "value2",
+        "key3": "value3"
+      }
