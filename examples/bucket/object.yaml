@@ -3,6 +3,9 @@ apiVersion: bucket.minio.upbound.io/v1alpha1
 kind: Bucket
 metadata:
   name: basebucket
+  annotations:
+    # upjet.upbound.io/manual-intervention: "Marked to skip deletion"
+    # finalizers: null
 spec:
   forProvider:
     forceDestroy: false

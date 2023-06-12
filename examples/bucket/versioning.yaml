@@ -1,0 +1,24 @@
+---
+apiVersion: bucket.minio.upbound.io/v1alpha1
+kind: Bucket
+metadata:
+  name: basebucket
+spec:
+  forProvider:
+    forceDestroy: false
+    objectLocking: false
+    acl: public
+---
+apiVersion: bucket.minio.upbound.io/v1alpha1
+kind: BucketVersioning
+metadata:
+  name: testversioning
+spec:
+  forProvider:
+    bucket: basebucket
+    versioningConfiguration:
+    - excludeFolders: true
+      excludedPrefixes:
+        - code/
+        - docs/
+      status: Suspended

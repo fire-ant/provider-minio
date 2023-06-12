@@ -1,0 +1,34 @@
+---
+apiVersion: bucket.minio.upbound.io/v1alpha1
+kind: Bucket
+metadata:
+  name: basebucket
+spec:
+  forProvider:
+    forceDestroy: false
+    objectLocking: false
+    acl: public
+---
+apiVersion: bucket.minio.upbound.io/v1alpha1
+kind: BucketPolicy
+metadata:
+  name: testpolicy
+  annotations:
+spec:
+  forProvider:
+    bucket: basebucket
+    policy: |
+      {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {"AWS": ["*"]},
+            "Resource": [
+              "arn:aws:s3:::basebucket"
+            ],
+            "Action": ["s3:ListBucket"]
+          }
+        ]
+      }
+#  deletion fails because bucket dissappears before policy is removed
