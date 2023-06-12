@@ -1,0 +1,10 @@
+---
+apiVersion: bucket.minio.upbound.io/v1alpha1
+kind: Bucket
+metadata:
+  name: testbucket
+spec:
+  forProvider:
+    forceDestroy: true
+    objectLocking: false
+    acl: public

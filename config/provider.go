@@ -8,14 +8,15 @@ import (
 	// Note(turkenh): we are importing this to embed provider schema document
 	_ "embed"
 
+	bucket "github.com/fire-ant/provider-minio/config/bucket"
+	iam "github.com/fire-ant/provider-minio/config/iam"
+	ilm "github.com/fire-ant/provider-minio/config/ilm"
 	ujconfig "github.com/upbound/upjet/pkg/config"
-
-	"github.com/upbound/upjet-provider-template/config/null"
 )
 
 const (
-	resourcePrefix = "template"
-	modulePath     = "github.com/upbound/upjet-provider-template"
+	resourcePrefix = "minio"
+	modulePath     = "github.com/fire-ant/provider-minio"
 )
 
 //go:embed schema.json
@@ -35,7 +36,9 @@ func GetProvider() *ujconfig.Provider {
 
 	for _, configure := range []func(provider *ujconfig.Provider){
 		// add custom config functions
-		null.Configure,
+		bucket.Configure,
+		ilm.Configure,
+		iam.Configure,
 	} {
 		configure(pc)
 	}

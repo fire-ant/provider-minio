@@ -10,7 +10,21 @@ import "github.com/upbound/upjet/pkg/config"
 // provider.
 var ExternalNameConfigs = map[string]config.ExternalName{
 	// Import requires using a randomly generated ID from provider: nl-2e21sda
-	"null_resource": config.IdentifierFromProvider,
+	"minio_s3_bucket":                   config.NameAsIdentifier,
+	"minio_s3_bucket_notification":      config.NameAsIdentifier,
+	"minio_s3_bucket_policy":            config.NameAsIdentifier,
+	"minio_s3_bucket_versioning":        config.NameAsIdentifier,
+	"minio_s3_object":                   config.NameAsIdentifier,
+	"minio_ilm_policy":                  config.NameAsIdentifier,
+	"minio_iam_group":                   config.NameAsIdentifier,
+	"minio_iam_group_membership":        config.NameAsIdentifier,
+	"minio_iam_group_policy":            config.NameAsIdentifier,
+	"minio_iam_group_policy_attachment": config.IdentifierFromProvider,
+	"minio_iam_group_user_attachment":   config.IdentifierFromProvider,
+	"minio_iam_policy":                  config.NameAsIdentifier,
+	"minio_iam_service_account":         config.NameAsIdentifier,
+	"minio_iam_user":                    config.NameAsIdentifier,
+	"minio_iam_user_policy_attachment":  config.NameAsIdentifier,
 }
 
 // ExternalNameConfigurations applies all external name configs listed in the
