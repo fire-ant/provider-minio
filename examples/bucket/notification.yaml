@@ -1,0 +1,30 @@
+---
+apiVersion: bucket.minio.upbound.io/v1alpha1
+kind: Bucket
+metadata:
+  name: basebucket
+spec:
+  forProvider:
+    forceDestroy: false
+    objectLocking: true
+    acl: public
+---
+apiVersion: bucket.minio.upbound.io/v1alpha1
+kind: BucketNotification
+metadata:
+  name: testnotification
+  annotations:
+    upjet.upbound.io/manual-intervention: "Marked to skip deletion"
+    finalizers: null
+spec:
+  forProvider:
+    bucket: basebucket
+    queue: []
+    #  need to know arn numbers ahead of time
+    # - events:
+    #   - s3:ObjectCreated:*
+    #   - s3:ObjectRemoved:Delete
+    #   filterPrefix: basebucket/
+    #   filterSuffix: .png
+    #   id: notification-queue
+    #   queueArn: "arn:minio:sqs::primary:webhook"

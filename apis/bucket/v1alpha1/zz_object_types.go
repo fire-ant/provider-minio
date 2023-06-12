@@ -14,6 +14,8 @@ import (
 )
 
 type ObjectObservation struct {
+	BucketName *string `json:"bucketName,omitempty" tf:"bucket_name,omitempty"`
+
 	Content *string `json:"content,omitempty" tf:"content,omitempty"`
 
 	ContentBase64 *string `json:"contentBase64,omitempty" tf:"content_base64,omitempty"`
@@ -32,6 +34,9 @@ type ObjectObservation struct {
 }
 
 type ObjectParameters struct {
+
+	// +kubebuilder:validation:Optional
+	BucketName *string `json:"bucketName,omitempty" tf:"bucket_name,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	Content *string `json:"content,omitempty" tf:"content,omitempty"`
@@ -79,6 +84,7 @@ type ObjectStatus struct {
 type Object struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.bucketName)",message="bucketName is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.objectName)",message="objectName is a required parameter"
 	Spec   ObjectSpec   `json:"spec"`
 	Status ObjectStatus `json:"status,omitempty"`

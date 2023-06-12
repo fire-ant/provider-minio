@@ -28,13 +28,14 @@ const (
 )
 
 const (
+	// minio credentials
 	server       = "minio_server"
 	user         = "minio_user"
 	password     = "minio_password"
 	sessionToken = "minio_session_token"
 	region       = "minio_region"
 	apiVersion   = "minio_api_version"
-	SSL          = "minio_ssl"
+	ssl          = "minio_ssl"
 	insecure     = "minio_insecure"
 )
 
@@ -93,8 +94,8 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 		if v, ok := creds[apiVersion]; ok {
 			ps.Configuration[apiVersion] = v
 		}
-		if v, ok := creds[SSL]; ok {
-			ps.Configuration[SSL] = v
+		if v, ok := creds[ssl]; ok {
+			ps.Configuration[ssl] = v
 		}
 		if v, ok := creds[insecure]; ok {
 			ps.Configuration[insecure] = v

@@ -4,6 +4,7 @@ metadata: {}
 spec:
   deletionPolicy: string
   forProvider:
+    bucket: string
     policy: string
   managementPolicy: string
   providerConfigRef:
@@ -32,6 +33,7 @@ spec:
     namespace: string
 status:
   atProvider:
+    bucket: string
     id: string
     policy: string
   conditions:

@@ -4,6 +4,7 @@ metadata: {}
 spec:
   deletionPolicy: string
   forProvider:
+    bucketName: string
     content: string
     contentBase64: string
     contentType: string
@@ -38,6 +39,7 @@ spec:
     namespace: string
 status:
   atProvider:
+    bucketName: string
     content: string
     contentBase64: string
     contentType: string
