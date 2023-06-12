@@ -5,18 +5,18 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.11.3
   creationTimestamp: null
-  name: resources.null.template.upbound.io
+  name: groupuserattachments.iam.minio.upbound.io
 spec:
-  group: null.template.upbound.io
+  group: iam.minio.upbound.io
   names:
     categories:
     - crossplane
     - managed
-    - template
-    kind: Resource
-    listKind: ResourceList
-    plural: resources
-    singular: resource
+    - minio
+    kind: GroupUserAttachment
+    listKind: GroupUserAttachmentList
+    plural: groupuserattachments
+    singular: groupuserattachment
   scope: Cluster
   versions:
   - additionalPrinterColumns:
@@ -35,7 +35,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Resource is the Schema for the Resources API. <no value>
+        description: GroupUserAttachment is the Schema for the GroupUserAttachments
+          API. <no value>
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -50,7 +51,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: ResourceSpec defines the desired state of Resource
+            description: GroupUserAttachmentSpec defines the desired state of GroupUserAttachment
             properties:
               deletionPolicy:
                 default: Delete
@@ -67,13 +68,10 @@ spec:
                 type: string
               forProvider:
                 properties:
-                  triggers:
-                    additionalProperties:
-                      type: string
-                    description: A map of arbitrary strings that, when changed, will
-                      force the null resource to be replaced, re-running any associated
-                      provisioners.
-                    type: object
+                  groupName:
+                    type: string
+                  userName:
+                    type: string
                 type: object
               managementPolicy:
                 default: FullControl
@@ -261,20 +259,22 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: groupName is a required parameter
+              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.groupName)
+            - message: userName is a required parameter
+              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.userName)
           status:
-            description: ResourceStatus defines the observed state of Resource.
+            description: GroupUserAttachmentStatus defines the observed state of GroupUserAttachment.
             properties:
               atProvider:
                 properties:
+                  groupName:
+                    type: string
                   id:
                     type: string
-                  triggers:
-                    additionalProperties:
-                      type: string
-                    description: A map of arbitrary strings that, when changed, will
-                      force the null resource to be replaced, re-running any associated
-                      provisioners.
-                    type: object
+                  userName:
+                    type: string
                 type: object
               conditions:
                 description: Conditions of the resource.

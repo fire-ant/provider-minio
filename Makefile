@@ -1,19 +1,18 @@
 # ====================================================================================
 # Setup Project
 
-PROJECT_NAME ?= upjet-provider-template
-PROJECT_REPO ?= github.com/upbound/$(PROJECT_NAME)
+PROJECT_NAME ?= provider-minio
+PROJECT_REPO ?= github.com/fire-ant/$(PROJECT_NAME)
 
 export TERRAFORM_VERSION ?= 1.3.3
 
-export TERRAFORM_PROVIDER_SOURCE ?= hashicorp/null
-export TERRAFORM_PROVIDER_REPO ?= https://github.com/hashicorp/terraform-provider-null
-export TERRAFORM_PROVIDER_VERSION ?= 3.1.0
-export TERRAFORM_PROVIDER_DOWNLOAD_NAME ?= terraform-provider-null
-export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX ?= https://releases.hashicorp.com/$(TERRAFORM_PROVIDER_DOWNLOAD_NAME)/$(TERRAFORM_PROVIDER_VERSION)
-export TERRAFORM_NATIVE_PROVIDER_BINARY ?= terraform-provider-null_v3.1.0_x5
+export TERRAFORM_PROVIDER_SOURCE ?= aminueza/minio
+export TERRAFORM_PROVIDER_REPO ?= https://github.com/aminueza/terraform-provider-minio
+export TERRAFORM_PROVIDER_VERSION ?= 1.15.2
+export TERRAFORM_PROVIDER_DOWNLOAD_NAME ?= terraform-provider-minio
+export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX ?= $(TERRAFORM_PROVIDER_REPO)/releases/download/v$(TERRAFORM_PROVIDER_VERSION)
+export TERRAFORM_NATIVE_PROVIDER_BINARY ?= terraform-provider-minio_v1.15.2
 export TERRAFORM_DOCS_PATH ?= docs/resources
-
 
 PLATFORMS ?= linux_amd64 linux_arm64
 
@@ -52,6 +51,8 @@ GO_SUBDIRS += cmd internal apis
 
 KIND_VERSION = v0.15.0
 UP_VERSION = v0.14.0
+USE_HELM3 = true
+HELM3_VERSION = v3.9.1
 UP_CHANNEL = stable
 UPTEST_VERSION = v0.2.1
 -include build/makelib/k8s_tools.mk
@@ -89,7 +90,7 @@ fallthrough: submodules
 
 # NOTE(hasheddan): we force image building to happen prior to xpkg build so that
 # we ensure image is present in daemon.
-xpkg.build.upjet-provider-template: do.build.images
+xpkg.build.provider-minio: do.build.images
 
 # NOTE(hasheddan): we ensure up is installed prior to running platform-specific
 # build steps in parallel to avoid encountering an installation race condition.
@@ -164,7 +165,11 @@ run: go.build
 # End to End Testing
 CROSSPLANE_NAMESPACE = upbound-system
 -include build/makelib/local.xpkg.mk
+ifeq ($(USE_DEVCON),true)
+-include patch/controlplane.mk
+else
 -include build/makelib/controlplane.mk
+endif
 
 uptest: $(UPTEST) $(KUBECTL) $(KUTTL)
 	@$(INFO) running automated tests
@@ -177,7 +182,25 @@ local-deploy: build controlplane.up local.xpkg.deploy.provider.$(PROJECT_NAME)
 	@$(KUBECTL) -n upbound-system wait --for=condition=Available deployment --all --timeout=5m
 	@$(OK) running locally built provider
 
-e2e: local-deploy uptest
+tools: $(HELM) $(UPTEST) $(KUBECTL) $(KUTTL) $(TERRAFORM) $(KIND)
+
+minio:
+	@$(HELM) repo add minio https://operator.min.io/ --force-update
+	@$(HELM) upgrade --install \
+  --namespace minio-system \
+  --create-namespace \
+  minio-operator minio/operator
+	@$(KUBECTL) -n minio-system wait deployment minio-operator --for condition=Available --timeout=300s
+	@$(OK) running locally deployed minio instance
+	@export SA_TOKEN=$(kubectl -n minio-syste,  get secret console-sa-secret -o jsonpath="{.data.token}" | base64 --decode) && echo "${SA_TOKEN}"
+	@$(HELM) upgrade --install \
+  --namespace tenant-ns \
+  --create-namespace tenant minio/tenant
+	@until kubectl -n tenant-ns get pod myminio-pool-0-3 >/dev/null 2>&1; do echo "waiting for minio tenant to initialize" && sleep 3; done
+	@$(KUBECTL) -n tenant-ns wait po myminio-pool-0-3 --for condition=Ready --timeout=300s
+	@$(OK) running locally deployed minio tenant
+
+e2e: local-deploy minio uptest
 
 .PHONY: cobertura submodules fallthrough run crds.clean
 
